@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syed Sufiyan Hamza | Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#030305',
+            cyberPurple: '#8B5CF6',
+            neonGreen: '#00ff41',
+          },
+          fontFamily: {
+            mono: ['"JetBrains Mono"', 'monospace'],
+            sans: ['"Space Grotesk"', 'sans-serif'],
+          },
+          animation: {
+            'spin-slow': 'spin 20s linear infinite',
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+</head>
+<body class="bg-obsidian text-white overflow-x-hidden">
+  <div id="app"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    const { motion, useScroll, useTransform } = window.Motion;
+
+    // --- Particle Background ---
+    const ParticleBg = () => {
+      return (
+        <div className="fixed inset-0 pointer-events-none opacity-20 z-0">
+          {[...Array(20)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-cyberPurple blur-xl"
+              initial={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                scale: Math.random() * 0.5 + 0.5,
+              }}
+              animate={{
+                y: [null, Math.random() * -100],
+                x: [null, (Math.random() - 0.5) * 100],
+              }}
+              transition={{
+                duration: Math.random() * 10 + 10,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
+              style={{
+                width: Math.random() * 200 + 50,
+                height: Math.random() * 200 + 50,
+              }}
+            />
+          ))}
+        </div>
+      );
+    };
+
+    // --- Components ---
+    const Hero = () => (
+      <section className="min-h-screen flex flex-col justify-center px-8 md:px-24 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="inline-block px-3 py-1 mb-6 border border-neonGreen text-neonGreen font-mono text-xs rounded-full bg-neonGreen/10">
+            CLASS 10 INNOVATOR
+          </div>
+          <h1 className="text-6xl md:text-8xl font-sans font-bold leading-tight mb-6">
+            SYED SUFIYAN <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-cyberPurple">
+              HAMZA
+            </span>
+          </h1>
+          <p className="font-mono text-gray-400 text-lg md:text-xl mb-10 max-w-2xl">
+            > Initializing creative protocols...<br/>
+            > Building the future from Titabar, Assam.
+          </p>
+          <div className="flex gap-4">
+            <button className="px-8 py-3 bg-white text-black font-bold font-sans hover:bg-gray-200 transition-colors rounded">
+              VIEW PROJECTS
+            </button>
+            <button className="px-8 py-3 border border-white/20 text-white font-mono hover:bg-white/10 transition-colors rounded">
+              CONTACT_ME
+            </button>
+          </div>
+        </motion.div>
+      </section>
+    );
+
+    const ProjectCard = ({ title, tech, desc, img }) => (
+      <motion.div 
+        whileHover={{ y: -10 }}
+        className="group relative bg-white/5 border border-white/10 rounded-xl overflow-hidden backdrop-blur-sm"
+      >
+        <div className="h-48 overflow-hidden">
+          <img src={img} alt={title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+        </div>
+        <div className="p-6">
+          <h3 className="text-2xl font-sans font-bold mb-2">{title}</h3>
+          <div className="flex flex-wrap gap-2 mb-4">
+            {tech.map(t => (
+              <span key={t} className="text-xs font-mono px-2 py-1 bg-cyberPurple/20 text-cyberPurple rounded">
+                {t}
+              </span>
+            ))}
+          </div>
+          <p className="text-gray-400 text-sm leading-relaxed">{desc}</p>
+        </div>
+      </motion.div>
+    );
+
+    const Projects = () => (
+      <section className="py-24 px-8 md:px-24 relative z-10 bg-black/20">
+        <h2 className="text-4xl font-sans font-bold mb-16 flex items-center gap-4">
+          <span className="w-8 h-1 bg-cyberPurple"></span>
+          SELECTED WORKS
+        </h2>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <ProjectCard 
+            title="Eternal Shops"
+            tech={['React', 'Node.js', 'Stripe']}
+            desc="Full-featured e-commerce platform with real-time inventory."
+            img="/gen?prompt=futuristic+ecommerce+dashboard+ui+dark+purple&aspect=16:9"
+          />
+          <ProjectCard 
+            title="Jarvis AI"
+            tech={['Python', 'Automation', 'Voice']}
+            desc="Desktop voice assistant for system control and automation."
+            img="/gen?prompt=jarvis+ai+interface+hologram+blue&aspect=16:9"
+          />
+          <ProjectCard 
+            title="SysSec Scripting"
+            tech={['PowerShell', 'Kali Linux']}
+            desc="Advanced automation scripts for system security and access control."
+            img="/gen?prompt=terminal+hacker+code+green+screen+cybersecurity&aspect=16:9"
+          />
+        </div>
+      </section>
+    );
+
+    const App = () => (
+      <div className="min-h-screen">
+        <ParticleBg />
+        <nav className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-50 mix-blend-difference">
+          <div className="font-bold font-sans text-xl">SSH.DEV</div>
+          <div className="font-mono text-sm hidden md:block">EST. 2025</div>
+        </nav>
+        <Hero />
+        <Projects />
+        <footer className="py-12 text-center font-mono text-sm text-gray-600">
+          // SYED SUFIYAN HAMZA // ALL RIGHTS RESERVED
+        </footer>
+      </div>
+    );
+
+    const root = ReactDOM.createRoot(document.getElementById('app'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
