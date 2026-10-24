@@ -18,13 +18,14 @@ function setMeta(selector: string, attr: string, value: string) {
  * The server-rendered defaults in index.html remain the fallback for
  * non-JS crawlers and social scrapers.
  */
-export function usePageMeta(title?: string, description?: string) {
+export function usePageMeta(title?: string, description?: string, keywords?: string) {
   useEffect(() => {
     const fullTitle = title ? `${title} | ${SITE_NAME}` : DEFAULT_TITLE;
     const desc = description ?? DEFAULT_DESCRIPTION;
 
     document.title = fullTitle;
     setMeta('meta[name="description"]', 'content', desc);
+    if (keywords) setMeta('meta[name="keywords"]', 'content', keywords);
     setMeta('meta[property="og:title"]', 'content', fullTitle);
     setMeta('meta[property="og:description"]', 'content', desc);
     setMeta('meta[name="twitter:title"]', 'content', fullTitle);
@@ -38,5 +39,28 @@ export function usePageMeta(title?: string, description?: string) {
       canonical.href = url;
       setMeta('meta[property="og:url"]', 'content', url);
     }
-  }, [title, description]);
+  }, [title, description, keywords]);
+}
+
+/**
+ * Per-route JSON-LD structured data.
+ *
+ * The site-wide ProfilePage schema stays in index.html; this appends a
+ * route-specific <script type="application/ld+json"> while the page is
+ * mounted and removes it on navigation, so schemas never accumulate or
+ * leak onto other routes. Pass absolute URLs built from
+ * window.location.origin — the same per-domain approach usePageMeta
+ * uses for canonicals.
+ */
+export function useJsonLd(data: Record<string, unknown>) {
+  // Serializing here keys the effect on content, not object identity,
+  // so inline schema literals don't re-inject on every render.
+  const json = JSON.stringify(data);
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = json;
+    document.head.appendChild(script);
+    return () => script.remove();
+  }, [json]);
 }

@@ -58,8 +58,10 @@ const GitHubSection: React.FC = () => {
     const deduped: DedupedEvent[] = [];
     for (const evt of events) {
       const commits = evt.type === 'PushEvent' ? (evt.payload?.commits?.length ?? 0) : 0;
+      const currentRepoName = evt.repo?.name ?? evt.payload?.forkee?.full_name ?? '';
       const prev = deduped[deduped.length - 1];
-      if (prev && prev.type === evt.type && prev.repo.name === evt.repo.name) {
+      const prevRepoName = prev?.repo?.name ?? prev?.payload?.forkee?.full_name ?? '';
+      if (prev && prev.type === evt.type && prevRepoName === currentRepoName) {
         prev.count += 1;
         prev.totalCommits += commits;
         continue;

@@ -28,6 +28,7 @@ const AnimatedRoutes: React.FC = () => {
   return (
     <Suspense fallback={<div className="min-h-screen" />}>
     <AnimatePresence mode="wait">
+      {/* @ts-expect-error React 19 types omit key from RoutesProps */}
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/projects" element={<PageTransition><ProjectsPage /></PageTransition>} />

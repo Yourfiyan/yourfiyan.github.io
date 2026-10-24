@@ -31,7 +31,7 @@ export interface GitHubRepo {
 export interface GitHubEvent {
   id: string;
   type: string;
-  repo: { name: string };
+  repo?: { name?: string };
   payload: any;
   created_at: string;
 }

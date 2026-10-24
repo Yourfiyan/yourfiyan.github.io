@@ -75,10 +75,10 @@ export const LABS: Lab[] = [
   },
   {
     id: 4,
-    title: "Cursor Playground",
-    desc: "An interactive reference for every standard CSS cursor — hover to preview, click to copy the CSS.",
+    title: "CSS Cursor Playground",
+    desc: "Interactive reference and generator for all 36 standard CSS cursors — hover to preview, test custom values, and copy CSS.",
     link: "/labs/cursor-playground",
-    tags: ["CSS", "UX", "Reference"],
+    tags: ["CSS", "Tool", "Reference"],
     icon: MousePointer2,
     internal: true
   }

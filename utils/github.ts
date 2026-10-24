@@ -68,12 +68,13 @@ export interface EventDescription {
 
 export function getEventDescription(event: {
   type: string;
-  repo: { name: string };
+  repo?: { name?: string };
   payload?: any;
   /** Aggregated commit count when consecutive PushEvents were deduped. */
   totalCommits?: number;
 }): EventDescription {
-  const repoName = event.repo.name.split('/').pop() || event.repo.name;
+  const rawRepoName = event.repo?.name || event.payload?.forkee?.full_name || event.payload?.forkee?.name || 'repository';
+  const repoName = rawRepoName.split('/').pop() || rawRepoName;
 
   switch (event.type) {
     case 'PushEvent': {
